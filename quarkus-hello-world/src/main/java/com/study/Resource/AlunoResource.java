@@ -19,11 +19,7 @@ import com.study.dto.AlunoDto;
 
 @Path("/aluno")
 public class AlunoResource {
-    AlunoService serviceAluno;
-
-    AlunoResource() {
-        serviceAluno = new AlunoService();
-    }
+    AlunoService serviceAluno = new AlunoService();
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
