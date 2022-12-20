@@ -45,13 +45,13 @@ public class ProfessorResource {
     }
 
     public Response listarProfessors() {
-        return Response.ok(Arrays.asList(professores.values())).build();
+        return Response.ok(Arrays.asList(professorService.listAll())).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarProfessor(@PathParam("id") Integer id) {
-        ProfessorDto professor = professores.get(id);
+        ProfessorDto professor = professorService.getById(id);
         if (Objects.isNull(professor))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(professor).build();
@@ -60,7 +60,7 @@ public class ProfessorResource {
     @GET
     public Response buscarProfessorPorNome(@QueryParam("prefixo") String nome) {
         if(nome == null) return listarProfessors();
-        List<ProfessorDto> ProfessorsFiltrados = professores.values().stream().filter(a -> a.getNome().startsWith(nome)).collect(Collectors.toList());
+        List<ProfessorDto> ProfessorsFiltrados = professorService.buscarPorNome(nome);
         if (Objects.isNull(ProfessorsFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(ProfessorsFiltrados).build();
@@ -69,19 +69,18 @@ public class ProfessorResource {
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     public Response alterarProfessor(ProfessorDto professor) {
-        if (Objects.isNull(professores.get(professor.getId())))
+        ProfessorDto professorAlterado = professorService.alterarProfessor(professor);
+        if (Objects.isNull(professorAlterado))
             return Response.status(Response.Status.NOT_FOUND).build();
-        professores.put(professor.getId(), professor);
         return Response.ok(professor).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deletarProfessor(@PathParam("id") Integer id) {
-        ProfessorDto professor = professores.get(id);
+        ProfessorDto professor = professorService.deletar(id);
         if (Objects.isNull(professor))
             return Response.status(Response.Status.NOT_FOUND).build();
-        professores.remove(professor.getId());
         return Response.status(Response.Status.NO_CONTENT).build();
     }
 
