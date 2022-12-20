@@ -1,11 +1,14 @@
 package com.study.Resource;
 
+
+
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
 import java.util.stream.Collectors;
 
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -21,17 +24,23 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.study.dto.ProfessorDto;
+import com.study.service.ProfessorService;
+
 
 @Path("/professor")
 public class ProfessorResource {
+
+    @Inject
+    ProfessorService  professorService;
+    
     private final Logger log = LoggerFactory.getLogger(ProfessorResource.class);
-    private HashMap<Integer, ProfessorDto> professores = new HashMap<>();
+
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response cadastrandoProfessor(ProfessorDto professor) {
         log.info(String.format("professor %d Cadastrado", professor.getId()));
-        professores.put(professor.getId(), professor);
+        professorService.cadastrandoProfessor(professor);
         return Response.status(Response.Status.CREATED).build();
     }
 
