@@ -1,6 +1,6 @@
 package com.study.dto;
 
-import com.study.Enums.SEXO;
+import com.study.enums.SEXO;
 
 public class ProfessorDto {
     private Integer id;
