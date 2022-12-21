@@ -3,16 +3,17 @@ package com.study.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.study.enums.SEXO;
 
 @Entity
-@Table(name = "PROFESSOR - BDI")
+@Table(name = "PROFESSOR_BDI")
 public class Professor {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
 

@@ -1,10 +1,16 @@
 package com.study.dto;
 
-public class AlunoDtoRequest {
-    private String nome;
+import com.study.enums.SEXO;
 
-    public AlunoDtoRequest(String nome) {
+public class AlunoDtoRequest {
+    private String matricula;
+    private String nome;
+    private SEXO sexo;
+
+    public AlunoDtoRequest(String matricula, String nome, SEXO sexo) {
+        this.matricula = matricula;
         this.nome = nome;
+        this.sexo = sexo;
     }
 
     public AlunoDtoRequest() {
@@ -16,5 +22,21 @@ public class AlunoDtoRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public SEXO getSexo() {
+        return sexo;
+    }
+
+    public void setSexo(SEXO sexo) {
+        this.sexo = sexo;
     }
 }
