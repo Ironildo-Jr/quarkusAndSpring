@@ -3,11 +3,8 @@ package com.study.resource;
 
 
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
-
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
