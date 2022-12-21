@@ -9,7 +9,7 @@ import javax.persistence.Table;
 import com.study.enums.SEXO;
 
 @Entity
-@Table(name = "ALUNO - BDI")
+@Table(name = "PROFESSOR - BDI")
 public class Professor {
     @Id
     @GeneratedValue
