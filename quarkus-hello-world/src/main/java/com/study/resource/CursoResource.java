@@ -1,4 +1,4 @@
-package com.study.Resource;
+package com.study.resource;
 
 import java.util.Arrays;
 import java.util.HashMap;
