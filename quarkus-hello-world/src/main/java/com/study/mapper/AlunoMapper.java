@@ -12,7 +12,7 @@ import com.study.model.Aluno;
 @RequestScoped
 public class AlunoMapper {
     public AlunoDtoResponse toResponse(Aluno aluno) {
-        return new AlunoDtoResponse(aluno.getMatricula(), aluno.getNome(), aluno.getSexo());
+        return new AlunoDtoResponse(aluno.getId(), aluno.getNome(), aluno.getSexo(), aluno.getMatricula());
     }
 
     public List<AlunoDtoResponse> toListResponse(List<Aluno> alunos) {
@@ -22,6 +22,6 @@ public class AlunoMapper {
     }
 
     public Aluno toEntity(AlunoDtoRequest alunoRequest) {
-        return new Aluno(null, alunoRequest.getNome(), alunoRequest.getMatricula(), alunoRequest.getSexo());
+        return new Aluno(null, alunoRequest.getNome(), alunoRequest.getSexo(), alunoRequest.getMatricula());
     }
 }

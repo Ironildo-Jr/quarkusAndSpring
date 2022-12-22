@@ -28,7 +28,7 @@ public class AlunoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoAluno(AlunoDtoRequest aluno) {
+    public Response cadastrarAluno(AlunoDtoRequest aluno) {
         serviceAluno.cadastrar(aluno);
         return Response.status(Response.Status.CREATED).build();
     }
