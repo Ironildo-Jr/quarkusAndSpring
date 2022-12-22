@@ -1,30 +1,18 @@
 package com.study.dto;
 
+import com.study.enums.SEXO;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@Builder
+@Data
+@AllArgsConstructor
+@NoArgsConstructor
 public class ProfessorDtoRequest {
     private String nome;
+    private SEXO sexo;
     private String titulo;
-
-    public ProfessorDtoRequest() {
-    }
-
-    public ProfessorDtoRequest(String nome, String titulo) {
-        this.nome = nome;
-        this.titulo = titulo;
-    }
-
-    public String getTitulo() {
-        return titulo;
-    }
-
-    public void setTitulo(String titulo) {
-        this.titulo = titulo;
-    }
-
-    public String getNome() {
-        return nome;
-    }
-
-    public void setNome(String nome) {
-        this.nome = nome;
-    }
 }
