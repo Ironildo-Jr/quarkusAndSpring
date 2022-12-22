@@ -1,4 +1,4 @@
-package com.study.Resource;
+package com.study.resource;
 
 import java.util.List;
 import java.util.Objects;
@@ -14,8 +14,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.study.Service.AlunoService;
-import com.study.dto.AlunoDto;
+import com.study.dto.AlunoDtoRequest;
+import com.study.dto.AlunoDtoResponse;
+import com.study.model.Aluno;
+import com.study.service.AlunoService;
 
 @Path("/aluno")
 public class AlunoResource {
@@ -23,7 +25,7 @@ public class AlunoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoAluno(AlunoDto aluno) {
+    public Response cadastrandoAluno(Aluno aluno) {
         serviceAluno.cadastrar(aluno);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -35,7 +37,7 @@ public class AlunoResource {
     @GET
     @Path("/{id}")
     public Response buscarAluno(@PathParam("id") Integer id) {
-        AlunoDto aluno = serviceAluno.BuscarPorId(id);
+        AlunoDtoResponse aluno = serviceAluno.BuscarPorId(id);
         if (Objects.isNull(aluno))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(aluno).build();
@@ -45,7 +47,7 @@ public class AlunoResource {
     public Response buscarAlunoPorNome(@QueryParam("prefixo") String nome) {
         if (nome == null)
             return listarAlunos();
-        List<AlunoDto> alunosFiltrados = serviceAluno.BurcarPorNome(nome);
+        List<AlunoDtoResponse> alunosFiltrados = serviceAluno.BurcarPorNome(nome);
         if (Objects.isNull(alunosFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(alunosFiltrados).build();
@@ -53,8 +55,9 @@ public class AlunoResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarAluno(AlunoDto aluno) {
-        AlunoDto alunoAlterado = serviceAluno.alterar(aluno);
+    @Path("/{id}")
+    public Response alterarAluno(@PathParam("id") Integer id, AlunoDtoRequest aluno) {
+        AlunoDtoResponse alunoAlterado = serviceAluno.alterar(id, aluno);
         if (Objects.isNull(alunoAlterado))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(alunoAlterado).build();
@@ -63,8 +66,7 @@ public class AlunoResource {
     @DELETE
     @Path("/{id}")
     public Response deletarAluno(@PathParam("id") Integer id) {
-        AlunoDto aluno = serviceAluno.excluir(id);
-        if (Objects.isNull(aluno))
+        if (Objects.isNull(serviceAluno.excluir(id)))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.status(Response.Status.NO_CONTENT).build();
     }

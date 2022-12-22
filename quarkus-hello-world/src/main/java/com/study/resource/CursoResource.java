@@ -1,10 +1,7 @@
-package com.study.Resource;
+package com.study.resource;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,9 +14,10 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.study.Service.CursoService;
-import com.study.dto.CursoDto;
-
+import com.study.dto.CursoDtoRequest;
+import com.study.dto.CursoDtoResponse;
+import com.study.model.Curso;
+import com.study.service.CursoService;
 
 @Path("/curso")
 public class CursoResource {
@@ -27,11 +25,10 @@ public class CursoResource {
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoCurso(CursoDto curso) {
+    public Response cadastrandoCurso(Curso curso) {
         serviceCurso.cadastrar(curso);
         return Response.status(Response.Status.CREATED).build();
     }
-
 
     public Response listarCursos() {
         return Response.ok(serviceCurso.ListarTodos()).build();
@@ -40,7 +37,7 @@ public class CursoResource {
     @GET
     @Path("/{id}")
     public Response buscarCurso(@PathParam("id") Integer id) {
-        CursoDto curso = serviceCurso.BuscarPorId(id);
+        CursoDtoResponse curso = serviceCurso.BuscarPorId(id);
         if (Objects.isNull(curso))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(curso).build();
@@ -48,8 +45,9 @@ public class CursoResource {
 
     @GET
     public Response buscarCursoPorNome(@QueryParam("prefixo") String nome) {
-        if(nome == null) return listarCursos();
-        List<CursoDto> cursosFiltrados = serviceCurso.BuscarPorNome(nome);
+        if (nome == null)
+            return listarCursos();
+        List<CursoDtoResponse> cursosFiltrados = serviceCurso.BurcarPorNome(nome);
         if (Objects.isNull(cursosFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(cursosFiltrados).build();
@@ -57,20 +55,20 @@ public class CursoResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarCurso(CursoDto curso) {
-        if (Objects.isNull(serviceCurso.BuscarPorId(curso.getId())))
+    @Path("/{id}")
+    public Response alterarCurso(@PathParam("id") Integer id, CursoDtoRequest curso) {
+        CursoDtoResponse cursoAlterado = serviceCurso.alterar(id, curso);
+        if (Objects.isNull(cursoAlterado))
             return Response.status(Response.Status.NOT_FOUND).build();
-        serviceCurso.alterar(curso);
-        return Response.ok(curso).build();
+        return Response.ok(cursoAlterado).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deletarCurso(@PathParam("id") Integer id) {
-        CursoDto curso = serviceCurso.BuscarPorId(id);
-        if (Objects.isNull(curso))
+        if (Objects.isNull(serviceCurso.excluir(id)))
             return Response.status(Response.Status.NOT_FOUND).build();
-            serviceCurso.excluir(id);
-        return Response.status(Response.Status.NO_CONTENT).build();    
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
+
 }

@@ -1,15 +1,32 @@
-package com.study.dto;
+package com.study.model;
 
-public class CursoDto {
-    private int id;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.Id;
+import javax.persistence.Table;
+
+@Entity
+@Table(name = "CURSO - BDI")
+public class Curso {
+    @Id
+    @GeneratedValue
+    @Column(name = "Id")
+    private Integer id;
+
+    @Column(name = "Nome")
     private String nome;
+
+    @Column(name = "Descrição")
     private String descricao;
-    private int duracao;
-    
-    public CursoDto() {
+
+    @Column(name = "Duração")
+    private Integer duracao;
+
+    public Curso() {
     }
 
-    public CursoDto(int id, String nome, String descricao, int duracao) {
+    public Curso(int id, String nome, String descricao, int duracao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;
@@ -67,7 +84,7 @@ public class CursoDto {
             return false;
         if (getClass() != obj.getClass())
             return false;
-        CursoDto other = (CursoDto) obj;
+        Curso other = (Curso) obj;
         if (id != other.id)
             return false;
         if (nome == null) {
@@ -87,7 +104,7 @@ public class CursoDto {
 
     @Override
     public String toString() {
-        return "CursoDto [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", duracao=" + duracao + "]";
+        return "Curso [id=" + id + ", nome=" + nome + ", descricao=" + descricao + ", duracao=" + duracao + "]";
     }
 
     
