@@ -1,11 +1,10 @@
 package com.study.resource;
 
-import java.util.Arrays;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Objects;
-import java.util.stream.Collectors;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -17,38 +16,41 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import com.study.dto.CursoDto;
+import com.study.dto.CursoDtoRequest;
+import com.study.dto.CursoDtoResponse;
+import com.study.service.CursoService;
 
-
+@RequestScoped
 @Path("/curso")
 public class CursoResource {
-    private HashMap<Integer, CursoDto> cursos = new HashMap<>();
+    @Inject
+    CursoService cursoService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoCurso(CursoDto curso) {
-        cursos.put(curso.getId(), curso);
+    public Response cadastrarCurso(CursoDtoRequest curso) {
+        cursoService.cadastrar(curso);
         return Response.status(Response.Status.CREATED).build();
     }
 
-
     public Response listarCursos() {
-        return Response.ok(Arrays.asList(cursos.values())).build();
+        return Response.ok(cursoService.ListarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarCurso(@PathParam("id") Integer id) {
-        CursoDto curso = cursos.get(id);
+        CursoDtoResponse curso = cursoService.BuscarPorId(id);
         if (Objects.isNull(curso))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(curso).build();
     }
 
     @GET
-    public Response buscarCursoPorNome(@QueryParam("prefixo") String nome) {
-        if(nome == null) return listarCursos();
-        List<CursoDto> cursosFiltrados = cursos.values().stream().filter(c -> c.getNome().startsWith(nome)).collect(Collectors.toList());
+    public Response buscarCursoPorNome(@QueryParam("Nome") String nome) {
+        if (nome == null)
+            return listarCursos();
+        List<CursoDtoResponse> cursosFiltrados = cursoService.BurcarPorNome(nome);
         if (Objects.isNull(cursosFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(cursosFiltrados).build();
@@ -56,20 +58,19 @@ public class CursoResource {
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarCurso(CursoDto curso) {
-        if (Objects.isNull(cursos.get(curso.getId())))
+    @Path("/{id}")
+    public Response alterarCurso(@PathParam("id") Integer id, CursoDtoRequest curso) {
+        CursoDtoResponse cursoAlterado = cursoService.alterar(id, curso);
+        if (Objects.isNull(cursoAlterado))
             return Response.status(Response.Status.NOT_FOUND).build();
-        cursos.put(curso.getId(), curso);
-        return Response.ok(curso).build();
+        return Response.ok(cursoAlterado).build();
     }
 
     @DELETE
     @Path("/{id}")
     public Response deletarCurso(@PathParam("id") Integer id) {
-        CursoDto curso = cursos.get(id);
-        if (Objects.isNull(curso))
+        if (Objects.isNull(cursoService.excluir(id)))
             return Response.status(Response.Status.NOT_FOUND).build();
-        cursos.remove(curso.getId());
-        return Response.status(Response.Status.NO_CONTENT).build();    
+        return Response.status(Response.Status.NO_CONTENT).build();
     }
 }
