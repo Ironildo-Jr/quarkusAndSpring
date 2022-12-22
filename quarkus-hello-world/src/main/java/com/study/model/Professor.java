@@ -9,11 +9,9 @@ import javax.persistence.Table;
 
 import com.study.enums.SEXO;
 
-import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
-
 @Entity
-@Table(name = "ALUNO_BDI")
-public class Aluno extends PanacheEntityBase{
+@Table(name = "PROFESSOR_BDI")
+public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
@@ -22,19 +20,19 @@ public class Aluno extends PanacheEntityBase{
     @Column(name = "Nome")
     private String nome;
 
-    @Column(name = "Matricula")
-    private String matricula;
+    @Column(name = "Titulo")
+    private String titulo;
 
     @Column(name = "Sexo")
     private SEXO sexo;
 
-    public Aluno() {
+    public Professor() {
     }
 
-    public Aluno(Integer id, String nome, String matricula, SEXO sexo) {
+    public Professor(Integer id, String nome, String titulo, SEXO sexo) {
         this.id = id;
         this.nome = nome;
-        this.matricula = matricula;
+        this.titulo = titulo;
         this.sexo = sexo;
     }
 
@@ -54,12 +52,12 @@ public class Aluno extends PanacheEntityBase{
         this.nome = nome;
     }
 
-    public String getMatricula() {
-        return matricula;
+    public String getTitulo() {
+        return titulo;
     }
 
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public SEXO getSexo() {
@@ -76,7 +74,7 @@ public class Aluno extends PanacheEntityBase{
         int result = 1;
         result = prime * result + ((id == null) ? 0 : id.hashCode());
         result = prime * result + ((nome == null) ? 0 : nome.hashCode());
-        result = prime * result + ((matricula == null) ? 0 : matricula.hashCode());
+        result = prime * result + ((titulo == null) ? 0 : titulo.hashCode());
         result = prime * result + ((sexo == null) ? 0 : sexo.hashCode());
         return result;
     }
@@ -89,7 +87,7 @@ public class Aluno extends PanacheEntityBase{
             return false;
         if (getClass() != obj.getClass())
             return false;
-        Aluno other = (Aluno) obj;
+        Professor other = (Professor) obj;
         if (id == null) {
             if (other.id != null)
                 return false;
@@ -100,10 +98,10 @@ public class Aluno extends PanacheEntityBase{
                 return false;
         } else if (!nome.equals(other.nome))
             return false;
-        if (matricula == null) {
-            if (other.matricula != null)
+        if (titulo == null) {
+            if (other.titulo != null)
                 return false;
-        } else if (!matricula.equals(other.matricula))
+        } else if (!titulo.equals(other.titulo))
             return false;
         if (sexo != other.sexo)
             return false;
@@ -112,6 +110,6 @@ public class Aluno extends PanacheEntityBase{
 
     @Override
     public String toString() {
-        return "Aluno [id=" + id + ", nome=" + nome + ", matricula=" + matricula + ", sexo=" + sexo + "]";
+        return "Aluno [id=" + id + ", nome=" + nome + ", titulo=" + titulo + ", sexo=" + sexo + "]";
     }
 }

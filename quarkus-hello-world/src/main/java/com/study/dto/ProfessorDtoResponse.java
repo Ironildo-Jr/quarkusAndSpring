@@ -2,18 +2,26 @@ package com.study.dto;
 
 import com.study.enums.SEXO;
 
-public class AlunoDtoRequest {
-    private String matricula;
+public class ProfessorDtoResponse {
+    private String titulo;
     private String nome;
     private SEXO sexo;
 
-    public AlunoDtoRequest(String matricula, String nome, SEXO sexo) {
-        this.matricula = matricula;
+    public ProfessorDtoResponse() {
+    }
+
+    public ProfessorDtoResponse(String titulo, String nome, SEXO sexo) {
+        this.titulo = titulo;
         this.nome = nome;
         this.sexo = sexo;
     }
 
-    public AlunoDtoRequest() {
+    public String getTitulo() {
+        return titulo;
+    }
+
+    public void setTitulo(String titulo) {
+        this.titulo = titulo;
     }
 
     public String getNome() {
@@ -22,14 +30,6 @@ public class AlunoDtoRequest {
 
     public void setNome(String nome) {
         this.nome = nome;
-    }
-
-    public String getMatricula() {
-        return matricula;
-    }
-
-    public void setMatricula(String matricula) {
-        this.matricula = matricula;
     }
 
     public SEXO getSexo() {
