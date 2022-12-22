@@ -3,6 +3,8 @@ package com.study.resource;
 import java.util.List;
 import java.util.Objects;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,16 +18,17 @@ import javax.ws.rs.core.Response;
 
 import com.study.dto.AlunoDtoRequest;
 import com.study.dto.AlunoDtoResponse;
-import com.study.model.Aluno;
 import com.study.service.AlunoService;
 
+@RequestScoped
 @Path("/aluno")
 public class AlunoResource {
-    AlunoService serviceAluno = new AlunoService();
+    @Inject
+    AlunoService serviceAluno;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoAluno(Aluno aluno) {
+    public Response cadastrandoAluno(AlunoDtoRequest aluno) {
         serviceAluno.cadastrar(aluno);
         return Response.status(Response.Status.CREATED).build();
     }
@@ -44,7 +47,7 @@ public class AlunoResource {
     }
 
     @GET
-    public Response buscarAlunoPorNome(@QueryParam("prefixo") String nome) {
+    public Response buscarAlunoPorNome(@QueryParam("Nome") String nome) {
         if (nome == null)
             return listarAlunos();
         List<AlunoDtoResponse> alunosFiltrados = serviceAluno.BurcarPorNome(nome);

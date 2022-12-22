@@ -3,16 +3,19 @@ package com.study.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 import com.study.enums.SEXO;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 @Entity
-@Table(name = "ALUNO - BDI")
-public class Aluno {
+@Table(name = "ALUNO_BDI")
+public class Aluno extends PanacheEntityBase{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
 
