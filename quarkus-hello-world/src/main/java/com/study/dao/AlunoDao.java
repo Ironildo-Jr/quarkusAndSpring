@@ -4,27 +4,32 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import com.study.model.Aluno;
+import com.study.repository.AlunoRepository;
 
 @RequestScoped
 public class AlunoDao {
 
+    @Inject
+    private AlunoRepository repository;
+
     public Aluno addAluno(Aluno aluno) {
-        aluno.persistAndFlush();
+        repository.persistAndFlush(aluno);
         return aluno;
     }
 
     public List<Aluno> getAlunos() {
-        return Aluno.listAll();
+        return repository.listAll();
     }
 
     public Aluno getAlunoById(Integer id) {
-        return Aluno.findById(id);
+        return repository.findById(id);
     }
 
     public List<Aluno> getAlunoByName(String nome) {
-        return Aluno.find("Nome LIKE ?1", "%" + nome + "%").list();
+        return repository.find("Nome LIKE ?1", "%" + nome + "%").list();
     }
 
     public Aluno alterarAluno(Integer id, Aluno aluno) {
@@ -35,13 +40,13 @@ public class AlunoDao {
         alunoExistente.setNome(aluno.getNome());
         alunoExistente.setMatricula(aluno.getMatricula());
         alunoExistente.setSexo(aluno.getSexo());
-        alunoExistente.persistAndFlush();
+        repository.persistAndFlush(alunoExistente);
         return alunoExistente;
     }
 
     public Aluno excluirAluno(Integer id) {
         Aluno aluno = getAlunoById(id);
-        aluno.delete();
+        repository.delete(aluno);
         return aluno;
     }
 }
