@@ -1,10 +1,9 @@
 package com.study.resource;
 
-
-
-import java.util.Arrays;
 import java.util.List;
 import java.util.Objects;
+
+import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
@@ -17,38 +16,32 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import com.study.dto.ProfessorDto;
+import com.study.dto.ProfessorDtoRequest;
+import com.study.dto.ProfessorDtoResponse;
 import com.study.service.ProfessorService;
 
-
+@RequestScoped
 @Path("/professor")
 public class ProfessorResource {
 
     @Inject
-    ProfessorService  professorService;
-    
-    private final Logger log = LoggerFactory.getLogger(ProfessorResource.class);
-
+    ProfessorService professorService;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoProfessor(ProfessorDto professor) {
-        log.info(String.format("professor %d Cadastrado", professor.getId()));
-        professorService.cadastrandoProfessor(professor);
+    public Response cadastrarProfessor(ProfessorDtoRequest professor) {
+        professorService.cadastrar(professor);
         return Response.status(Response.Status.CREATED).build();
     }
 
     public Response listarProfessors() {
-        return Response.ok(Arrays.asList(professorService.listAll())).build();
+        return Response.ok(professorService.ListarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarProfessor(@PathParam("id") Integer id) {
-        ProfessorDto professor = professorService.getById(id);
+        ProfessorDtoResponse professor = professorService.BuscarPorId(id);
         if (Objects.isNull(professor))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(professor).build();
@@ -56,26 +49,28 @@ public class ProfessorResource {
 
     @GET
     public Response buscarProfessorPorNome(@QueryParam("prefixo") String nome) {
-        if(nome == null) return listarProfessors();
-        List<ProfessorDto> ProfessorsFiltrados = professorService.buscarPorNome(nome);
-        if (Objects.isNull(ProfessorsFiltrados))
+        if (nome == null)
+            return listarProfessors();
+        List<ProfessorDtoResponse> professoresFiltrados = professorService.BurcarPorNome(nome);
+        if (Objects.isNull(professoresFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(ProfessorsFiltrados).build();
+        return Response.ok(professoresFiltrados).build();
     }
 
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response alterarProfessor(ProfessorDto professor) {
-        ProfessorDto professorAlterado = professorService.alterarProfessor(professor);
+    @Path("/{id}")
+    public Response alterarProfessor(@PathParam("id") Integer id, ProfessorDtoRequest professor) {
+        ProfessorDtoResponse professorAlterado = professorService.alterar(id, professor);
         if (Objects.isNull(professorAlterado))
             return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(professor).build();
+        return Response.ok(professorAlterado).build();
     }
 
     @DELETE
     @Path("/{id}")
-    public Response deletarProfessor(@PathParam("id") Integer id) {
-        ProfessorDto professor = professorService.deletar(id);
+    public Response excluirProfessor(@PathParam("id") Integer id) {
+        ProfessorDtoResponse professor = professorService.excluir(id);
         if (Objects.isNull(professor))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.status(Response.Status.NO_CONTENT).build();

@@ -1,45 +1,52 @@
 package com.study.service;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Objects;
-import java.util.stream.Collectors;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
+import javax.transaction.Transactional;
 
-import com.study.dto.ProfessorDto;
+import com.study.dao.ProfessorDao;
+import com.study.dto.ProfessorDtoRequest;
+import com.study.dto.ProfessorDtoResponse;
+import com.study.mapper.ProfessorMapper;
 
-@ApplicationScoped
+@RequestScoped
 public class ProfessorService {
 
-    private HashMap<Integer, ProfessorDto> professores = new HashMap<>();
+    @Inject
+    private ProfessorDao professorDao;
 
-    public void cadastrandoProfessor(ProfessorDto professor){
-        professores.put(professor.getId(), professor);
+    @Inject
+    private ProfessorMapper professorMapper;
+
+    @Transactional
+    public ProfessorDtoResponse cadastrar(ProfessorDtoRequest professor) {
+        return professorMapper.toResponse(professorDao.addProfessor(professorMapper.toEntity(professor)));
     }
 
-    public ProfessorDto getById(Integer id) {
-        return  professores.get(id);
+    @Transactional
+    public List<ProfessorDtoResponse> ListarTodos() {
+        return professorMapper.toListResponse(professorDao.getProfessores());
     }
 
-    public List<ProfessorDto> listAll() {
-        return professores.values().stream().collect(Collectors.toList());
+    @Transactional
+    public ProfessorDtoResponse BuscarPorId(Integer id) {
+        return professorMapper.toResponse(professorDao.getProfessorById(id));
     }
 
-    public List<ProfessorDto> buscarPorNome(String nome) {
-        return professores.values().stream().filter(a -> a.getNome().startsWith(nome)).collect(Collectors.toList());
+    @Transactional
+    public List<ProfessorDtoResponse> BurcarPorNome(String nome) {
+        return professorMapper.toListResponse(professorDao.getProfessorByName(nome));
     }
 
-    public ProfessorDto alterarProfessor(ProfessorDto professor) {
-        if(Objects.isNull(professores.get(professor.getId())))
-            return null;
-        return professores.put(professor.getId(), professor);
+    @Transactional
+    public ProfessorDtoResponse alterar(Integer id, ProfessorDtoRequest professor) {
+        return professorMapper.toResponse(professorDao.alterarProfessor(id, professorMapper.toEntity(professor)));
     }
 
-    public ProfessorDto deletar(Integer id) {
-        ProfessorDto professor = professores.get(id);
-        return professores.remove(professor.getId());
+    @Transactional
+    public ProfessorDtoResponse excluir(Integer id) {
+        return professorMapper.toResponse(professorDao.excluirProfessor(id));
     }
-
-
 }

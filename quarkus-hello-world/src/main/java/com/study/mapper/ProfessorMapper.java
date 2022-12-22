@@ -3,13 +3,17 @@ package com.study.mapper;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.enterprise.context.RequestScoped;
+
 import com.study.dto.ProfessorDtoRequest;
 import com.study.dto.ProfessorDtoResponse;
 import com.study.model.Professor;
 
+@RequestScoped
 public class ProfessorMapper {
     public ProfessorDtoResponse toResponse(Professor professor) {
-        return new ProfessorDtoResponse(professor.getTitulo(), professor.getNome(), professor .getSexo());
+        return new ProfessorDtoResponse(professor.getId(), professor.getNome(), professor.getSexo(),
+                professor.getTitulo());
     }
 
     public List<ProfessorDtoResponse> toListResponse(List<Professor> professores) {
@@ -19,6 +23,7 @@ public class ProfessorMapper {
     }
 
     public Professor toEntity(ProfessorDtoRequest professorResquest) {
-        return new Professor(null, professorResquest.getNome(), null, null);
+        return new Professor(null, professorResquest.getNome(), professorResquest.getSexo(),
+                professorResquest.getTitulo());
     }
 }
