@@ -1,6 +1,7 @@
 package com.study.dto;
 
 import com.study.enums.SEXO;
+import com.study.enums.TITULO;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -15,5 +16,5 @@ public class ProfessorDtoResponse {
     private Integer id;
     private String nome;
     private SEXO sexo;
-    private String titulo;
+    private TITULO titulo;
 }
