@@ -32,6 +32,7 @@ public class Professor {
     @Column(name = "Nome")
     private String nome;
 
+    @Enumerated(EnumType.STRING)
     @Column(name = "Sexo")
     private SEXO sexo;
 
