@@ -1,5 +1,5 @@
 package com.study.enums;
 
 public enum SEXO {
-    MASCULINO, FEMININO,NAOBINARIO, CAVALO;
+    MASCULINO, FEMININO,NAO_BINARIO, CAVALO;
 }
