@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import com.study.dto.AlunoDtoRequest;
 import com.study.dto.AlunoDtoResponse;
@@ -23,7 +24,7 @@ public class AlunoService {
     private AlunoMapper alunoMapper;
 
     @Transactional
-    public AlunoDtoResponse cadastrar(AlunoDtoRequest aluno) {
+    public AlunoDtoResponse cadastrar(@Valid AlunoDtoRequest aluno) {
         Aluno entityAluno = alunoMapper.toEntity(aluno);
         repository.persistAndFlush(entityAluno);
         return alunoMapper.toResponse(entityAluno);
@@ -45,7 +46,7 @@ public class AlunoService {
     }
 
     @Transactional
-    public AlunoDtoResponse alterar(Integer id, AlunoDtoRequest aluno) {
+    public AlunoDtoResponse alterar(Integer id, @Valid AlunoDtoRequest aluno) {
         Aluno alunoExistente = buscar(id);
         if (Objects.isNull(alunoExistente)) {
             return alunoMapper.toResponse(new Aluno());

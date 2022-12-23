@@ -6,6 +6,7 @@ import java.util.Objects;
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
 import javax.transaction.Transactional;
+import javax.validation.Valid;
 
 import com.study.dto.CursoDtoRequest;
 import com.study.dto.CursoDtoResponse;
@@ -22,7 +23,7 @@ public class CursoService {
     private CursoMapper cursoMapper;
 
     @Transactional
-    public CursoDtoResponse cadastrar(CursoDtoRequest curso) {
+    public CursoDtoResponse cadastrar(@Valid CursoDtoRequest curso) {
         Curso entityCurso = cursoMapper.toEntity(curso);
         repository.persistAndFlush(entityCurso);
         return cursoMapper.toResponse(entityCurso);
@@ -44,7 +45,7 @@ public class CursoService {
     }
 
     @Transactional
-    public CursoDtoResponse alterar(Integer id, CursoDtoRequest curso) {
+    public CursoDtoResponse alterar(Integer id, @Valid CursoDtoRequest curso) {
         Curso cursoExistente = buscar(id);
         if (Objects.isNull(cursoExistente)) {
             return cursoMapper.toResponse(new Curso());

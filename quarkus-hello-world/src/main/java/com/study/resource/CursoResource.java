@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -18,6 +19,7 @@ import javax.ws.rs.core.Response;
 
 import com.study.dto.CursoDtoRequest;
 import com.study.dto.CursoDtoResponse;
+import com.study.dto.ErrorResponseDto;
 import com.study.service.CursoService;
 
 @RequestScoped
@@ -29,8 +31,13 @@ public class CursoResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response cadastrarCurso(CursoDtoRequest curso) {
-        cursoService.cadastrar(curso);
-        return Response.status(Response.Status.CREATED).build();
+        try {
+            cursoService.cadastrar(curso);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (ConstraintViolationException exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ErrorResponseDto.createFromValidation(exception))
+                    .build();
+        }
     }
 
     public Response listarCursos() {
@@ -60,10 +67,15 @@ public class CursoResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response alterarCurso(@PathParam("id") Integer id, CursoDtoRequest curso) {
-        CursoDtoResponse cursoAlterado = cursoService.alterar(id, curso);
-        if (Objects.isNull(cursoAlterado))
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(cursoAlterado).build();
+        try {
+            CursoDtoResponse cursoAlterado = cursoService.alterar(id, curso);
+            if (Objects.isNull(cursoAlterado))
+                return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(cursoAlterado).build();
+        } catch (ConstraintViolationException exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ErrorResponseDto.createFromValidation(exception))
+                    .build();
+        }
     }
 
     @DELETE

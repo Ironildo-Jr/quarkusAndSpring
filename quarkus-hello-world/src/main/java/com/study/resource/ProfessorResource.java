@@ -5,6 +5,7 @@ import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
 import javax.inject.Inject;
+import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,6 +17,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.study.dto.ErrorResponseDto;
 import com.study.dto.ProfessorDtoRequest;
 import com.study.dto.ProfessorDtoResponse;
 import com.study.service.ProfessorService;
@@ -30,8 +32,13 @@ public class ProfessorResource {
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
     public Response cadastrarProfessor(ProfessorDtoRequest professor) {
-        professorService.cadastrar(professor);
-        return Response.status(Response.Status.CREATED).build();
+        try {
+            professorService.cadastrar(professor);
+            return Response.status(Response.Status.CREATED).build();
+        } catch (ConstraintViolationException exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ErrorResponseDto.createFromValidation(exception))
+                    .build();
+        }
     }
 
     public Response listarProfessors() {
@@ -61,10 +68,15 @@ public class ProfessorResource {
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
     public Response alterarProfessor(@PathParam("id") Integer id, ProfessorDtoRequest professor) {
-        ProfessorDtoResponse professorAlterado = professorService.alterar(id, professor);
-        if (Objects.isNull(professorAlterado))
-            return Response.status(Response.Status.NOT_FOUND).build();
-        return Response.ok(professorAlterado).build();
+        try {
+            ProfessorDtoResponse professorAlterado = professorService.alterar(id, professor);
+            if (Objects.isNull(professorAlterado))
+                return Response.status(Response.Status.NOT_FOUND).build();
+            return Response.ok(professorAlterado).build();
+        } catch (ConstraintViolationException exception) {
+            return Response.status(Response.Status.BAD_REQUEST).entity(ErrorResponseDto.createFromValidation(exception))
+                    .build();
+        }
     }
 
     @DELETE
