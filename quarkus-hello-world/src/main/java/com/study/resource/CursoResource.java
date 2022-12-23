@@ -34,13 +34,13 @@ public class CursoResource {
     }
 
     public Response listarCursos() {
-        return Response.ok(cursoService.ListarTodos()).build();
+        return Response.ok(cursoService.listarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarCurso(@PathParam("id") Integer id) {
-        CursoDtoResponse curso = cursoService.BuscarPorId(id);
+        CursoDtoResponse curso = cursoService.buscarPorId(id);
         if (Objects.isNull(curso))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(curso).build();
@@ -50,7 +50,7 @@ public class CursoResource {
     public Response buscarCursoPorNome(@QueryParam("Nome") String nome) {
         if (nome == null)
             return listarCursos();
-        List<CursoDtoResponse> cursosFiltrados = cursoService.BurcarPorNome(nome);
+        List<CursoDtoResponse> cursosFiltrados = cursoService.burcarPorNome(nome);
         if (Objects.isNull(cursosFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(cursosFiltrados).build();
@@ -69,7 +69,7 @@ public class CursoResource {
     @DELETE
     @Path("/{id}")
     public Response deletarCurso(@PathParam("id") Integer id) {
-        if (Objects.isNull(cursoService.excluir(id)))
+        if (cursoService.excluir(id))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.status(Response.Status.NO_CONTENT).build();
     }

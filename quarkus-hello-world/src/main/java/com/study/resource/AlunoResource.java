@@ -34,13 +34,13 @@ public class AlunoResource {
     }
 
     public Response listarAlunos() {
-        return Response.ok(serviceAluno.ListarTodos()).build();
+        return Response.ok(serviceAluno.listarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarAluno(@PathParam("id") Integer id) {
-        AlunoDtoResponse aluno = serviceAluno.BuscarPorId(id);
+        AlunoDtoResponse aluno = serviceAluno.buscarPorId(id);
         if (Objects.isNull(aluno))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(aluno).build();
@@ -50,7 +50,7 @@ public class AlunoResource {
     public Response buscarAlunoPorNome(@QueryParam("Nome") String nome) {
         if (nome == null)
             return listarAlunos();
-        List<AlunoDtoResponse> alunosFiltrados = serviceAluno.BurcarPorNome(nome);
+        List<AlunoDtoResponse> alunosFiltrados = serviceAluno.burcarPorNome(nome);
         if (Objects.isNull(alunosFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(alunosFiltrados).build();
@@ -69,7 +69,7 @@ public class AlunoResource {
     @DELETE
     @Path("/{id}")
     public Response deletarAluno(@PathParam("id") Integer id) {
-        if (Objects.isNull(serviceAluno.excluir(id)))
+        if (serviceAluno.excluir(id))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.status(Response.Status.NO_CONTENT).build();
     }

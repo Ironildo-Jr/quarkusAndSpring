@@ -35,23 +35,23 @@ public class ProfessorResource {
     }
 
     public Response listarProfessors() {
-        return Response.ok(professorService.ListarTodos()).build();
+        return Response.ok(professorService.listarTodos()).build();
     }
 
     @GET
     @Path("/{id}")
     public Response buscarProfessor(@PathParam("id") Integer id) {
-        ProfessorDtoResponse professor = professorService.BuscarPorId(id);
+        ProfessorDtoResponse professor = professorService.buscarPorId(id);
         if (Objects.isNull(professor))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(professor).build();
     }
 
     @GET
-    public Response buscarProfessorPorNome(@QueryParam("prefixo") String nome) {
+    public Response buscarProfessorPorNome(@QueryParam("Nome") String nome) {
         if (nome == null)
             return listarProfessors();
-        List<ProfessorDtoResponse> professoresFiltrados = professorService.BurcarPorNome(nome);
+        List<ProfessorDtoResponse> professoresFiltrados = professorService.burcarPorNome(nome);
         if (Objects.isNull(professoresFiltrados))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(professoresFiltrados).build();
@@ -70,8 +70,7 @@ public class ProfessorResource {
     @DELETE
     @Path("/{id}")
     public Response excluirProfessor(@PathParam("id") Integer id) {
-        ProfessorDtoResponse professor = professorService.excluir(id);
-        if (Objects.isNull(professor))
+        if (professorService.excluir(id))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.status(Response.Status.NO_CONTENT).build();
     }
