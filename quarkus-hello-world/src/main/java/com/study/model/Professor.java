@@ -22,7 +22,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "PROFESSOR_BDI")
+@Table(name = "PROFESSOR")
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

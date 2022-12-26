@@ -17,7 +17,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "CURSO_BDI")
+@Table(name = "CURSO")
 public class Curso {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

@@ -21,7 +21,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "ALUNO_BDI")
+@Table(name = "ALUNO")
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
