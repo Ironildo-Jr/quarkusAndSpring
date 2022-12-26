@@ -3,30 +3,33 @@ package com.study.model;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
+import io.quarkus.hibernate.orm.panache.PanacheEntityBase;
+
 @Entity
-@Table(name = "CURSO - BDI")
-public class Curso {
+@Table(name = "CURSO_BDI")
+public class Curso extends PanacheEntityBase{
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "Id")
     private Integer id;
 
     @Column(name = "Nome")
     private String nome;
 
-    @Column(name = "Descrição")
+    @Column(name = "Descricao")
     private String descricao;
 
-    @Column(name = "Duração")
+    @Column(name = "Duracao")
     private Integer duracao;
 
     public Curso() {
     }
 
-    public Curso(int id, String nome, String descricao, int duracao) {
+    public Curso(Integer id, String nome, String descricao, int duracao) {
         this.id = id;
         this.nome = nome;
         this.descricao = descricao;

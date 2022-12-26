@@ -2,6 +2,8 @@ package com.study.model;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -24,6 +26,7 @@ public class Professor {
     private String titulo;
 
     @Column(name = "Sexo")
+    @Enumerated(EnumType.STRING)
     private SEXO sexo;
 
     public Professor() {

@@ -3,6 +3,8 @@ package com.study.resource;
 import java.util.List;
 import java.util.Objects;
 
+import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
@@ -16,16 +18,17 @@ import javax.ws.rs.core.Response;
 
 import com.study.dto.CursoDtoRequest;
 import com.study.dto.CursoDtoResponse;
-import com.study.model.Curso;
 import com.study.service.CursoService;
 
+@RequestScoped
 @Path("/curso")
 public class CursoResource {
-    CursoService serviceCurso = new CursoService();
+    @Inject
+    CursoService serviceCurso;
 
     @POST
     @Consumes(MediaType.APPLICATION_JSON)
-    public Response cadastrandoCurso(Curso curso) {
+    public Response cadastrandoCurso(CursoDtoRequest curso) {
         serviceCurso.cadastrar(curso);
         return Response.status(Response.Status.CREATED).build();
     }
