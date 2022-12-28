@@ -10,7 +10,9 @@ import javax.validation.Valid;
 
 import com.study.dto.CursoDtoRequest;
 import com.study.dto.CursoDtoResponse;
+import com.study.dto.ProfessorDtoResponse;
 import com.study.mapper.CursoMapper;
+import com.study.mapper.ProfessorMapper;
 import com.study.model.Curso;
 import com.study.repository.CursoRepository;
 
@@ -21,6 +23,9 @@ public class CursoService {
 
     @Inject
     private CursoMapper cursoMapper;
+
+    @Inject
+    private ProfessorMapper professorMapper;
 
     @Transactional
     public CursoDtoResponse cadastrar(@Valid CursoDtoRequest curso) {
@@ -45,10 +50,19 @@ public class CursoService {
     }
 
     @Transactional
+    public ProfessorDtoResponse buscarProfessorCurso(Integer id) {
+        Curso curso = buscar(id);
+        if (Objects.isNull(curso) || Objects.isNull(curso.getProfessor()))
+            return null;
+
+        return professorMapper.toResponse(curso.getProfessor());
+    }
+
+    @Transactional
     public CursoDtoResponse alterar(Integer id, @Valid CursoDtoRequest curso) {
         Curso cursoExistente = buscar(id);
         if (Objects.isNull(cursoExistente)) {
-            return cursoMapper.toResponse(new Curso());
+            return null;
         }
         cursoExistente.setNome(curso.getNome());
         cursoExistente.setDescricao(curso.getDescricao());
@@ -65,4 +79,5 @@ public class CursoService {
     private Curso buscar(Integer id) {
         return repository.findById(id);
     }
+
 }

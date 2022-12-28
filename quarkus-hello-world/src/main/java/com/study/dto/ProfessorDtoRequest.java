@@ -22,7 +22,5 @@ public class ProfessorDtoRequest {
 
     private SEXO sexo;
 
-    @NotBlank(message = "Titulo nao pode ser nula")
-    @Size(min = 3, message = "Titulo deve ter pelo menos 3 digitos")
     private TITULO titulo;
 }

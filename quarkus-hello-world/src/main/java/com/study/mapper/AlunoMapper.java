@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import javax.enterprise.context.RequestScoped;
+import javax.inject.Inject;
 
 import com.study.dto.AlunoDtoRequest;
 import com.study.dto.AlunoDtoResponse;
@@ -11,8 +12,12 @@ import com.study.model.Aluno;
 
 @RequestScoped
 public class AlunoMapper {
+
+    @Inject
+    ProfessorMapper professorMapper;
+
     public AlunoDtoResponse toResponse(Aluno aluno) {
-        return new AlunoDtoResponse(aluno.getId(), aluno.getNome(), aluno.getSexo(), aluno.getMatricula());
+        return new AlunoDtoResponse(aluno.getId(), aluno.getNome(), aluno.getSexo(), aluno.getMatricula(), professorMapper.toResponse(aluno.getProfessor()));
     }
 
     public List<AlunoDtoResponse> toListResponse(List<Aluno> alunos) {
@@ -22,6 +27,6 @@ public class AlunoMapper {
     }
 
     public Aluno toEntity(AlunoDtoRequest alunoRequest) {
-        return new Aluno(null, alunoRequest.getNome(), alunoRequest.getSexo(), alunoRequest.getMatricula());
+        return new Aluno(null, alunoRequest.getNome(), alunoRequest.getSexo(), alunoRequest.getMatricula(), null);
     }
 }

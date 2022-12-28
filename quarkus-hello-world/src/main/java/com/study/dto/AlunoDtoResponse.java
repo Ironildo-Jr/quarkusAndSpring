@@ -16,4 +16,5 @@ public class AlunoDtoResponse {
     private String nome;
     private SEXO sexo;
     private String matricula;
+    private ProfessorDtoResponse professor;
 }

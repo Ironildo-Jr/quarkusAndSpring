@@ -1,12 +1,18 @@
 package com.study.model;
 
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 
 import com.study.enums.SEXO;
@@ -26,10 +32,10 @@ import lombok.NoArgsConstructor;
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id")
+    @Column(name = "Id", nullable = false)
     private Integer id;
 
-    @Column(name = "Nome")
+    @Column(name = "Nome", nullable = false)
     private String nome;
 
     @Enumerated(EnumType.STRING)
@@ -37,6 +43,13 @@ public class Professor {
     private SEXO sexo;
 
     @Enumerated(EnumType.STRING)
-    @Column(name = "Titulo")
+    @Column(name = "Titulo", nullable = false)
     private TITULO titulo;
+
+    @OneToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "Curso")
+    private Curso curso;
+
+    @OneToMany(fetch = FetchType.LAZY, mappedBy = "professor")
+    private List<Aluno> alunos;
 }

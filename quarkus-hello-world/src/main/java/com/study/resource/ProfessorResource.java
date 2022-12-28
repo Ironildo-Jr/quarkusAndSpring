@@ -9,6 +9,7 @@ import javax.validation.ConstraintViolationException;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
+import javax.ws.rs.PATCH;
 import javax.ws.rs.POST;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
@@ -17,6 +18,7 @@ import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
+import com.study.dto.AlunoDtoResponse;
 import com.study.dto.ErrorResponseDto;
 import com.study.dto.ProfessorDtoRequest;
 import com.study.dto.ProfessorDtoResponse;
@@ -64,6 +66,15 @@ public class ProfessorResource {
         return Response.ok(professoresFiltrados).build();
     }
 
+    @GET
+    @Path("/{id}/alunos")
+    public Response buscarAlunosProfessor(@PathParam("id") Integer id) {
+        List<AlunoDtoResponse> alunos = professorService.buscarAlunosProfessor(id);
+        if (Objects.isNull(alunos))
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(alunos).build();
+    }
+
     @PUT
     @Consumes(MediaType.APPLICATION_JSON)
     @Path("/{id}")
@@ -77,6 +88,17 @@ public class ProfessorResource {
             return Response.status(Response.Status.BAD_REQUEST).entity(ErrorResponseDto.createFromValidation(exception))
                     .build();
         }
+    }
+
+    @PATCH
+    @Consumes(MediaType.APPLICATION_JSON)
+    @Path("/{id-professor}/curso/{id-curso}")
+    public Response alterarCursoProfessor(@PathParam("id-professor") Integer idProfessor,
+            @PathParam("id-curso") Integer idCurso) {
+        ProfessorDtoResponse professorAlterado = professorService.alterarCurso(idProfessor, idCurso);
+        if (Objects.isNull(professorAlterado))
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(professorAlterado).build();
     }
 
     @DELETE

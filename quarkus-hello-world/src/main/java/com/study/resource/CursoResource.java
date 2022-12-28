@@ -20,6 +20,7 @@ import javax.ws.rs.core.Response;
 import com.study.dto.CursoDtoRequest;
 import com.study.dto.CursoDtoResponse;
 import com.study.dto.ErrorResponseDto;
+import com.study.dto.ProfessorDtoResponse;
 import com.study.service.CursoService;
 
 @RequestScoped
@@ -51,6 +52,15 @@ public class CursoResource {
         if (Objects.isNull(curso))
             return Response.status(Response.Status.NOT_FOUND).build();
         return Response.ok(curso).build();
+    }
+
+    @GET
+    @Path("/{id}/professor")
+    public Response buscarProfessorCurso(@PathParam("id") Integer id) {
+        ProfessorDtoResponse professor = cursoService.buscarProfessorCurso(id);
+        if (Objects.isNull(professor))
+            return Response.status(Response.Status.NOT_FOUND).build();
+        return Response.ok(professor).build();
     }
 
     @GET

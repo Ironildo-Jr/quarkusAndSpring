@@ -22,7 +22,5 @@ public class CursoDtoRequest {
     @Size(min = 10, message = "Descricao deve ter pelo menos 10 digitos")
     private String descricao;
 
-    @NotBlank(message = "Duracao nao pode ser nula")
-    @Size(min = 1 , message = "Duracao deve ter pelo menos 1 digitos")
-    private int duracao;
+    private Integer duracao;
 }

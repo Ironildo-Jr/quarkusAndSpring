@@ -12,13 +12,18 @@ import com.study.dto.AlunoDtoRequest;
 import com.study.dto.AlunoDtoResponse;
 import com.study.mapper.AlunoMapper;
 import com.study.model.Aluno;
+import com.study.model.Professor;
 import com.study.repository.AlunoRepository;
+import com.study.repository.ProfessorRepository;
 
 @RequestScoped
 public class AlunoService {
 
     @Inject
     private AlunoRepository repository;
+
+    @Inject
+    private ProfessorRepository professorRepository;
 
     @Inject
     private AlunoMapper alunoMapper;
@@ -49,7 +54,7 @@ public class AlunoService {
     public AlunoDtoResponse alterar(Integer id, @Valid AlunoDtoRequest aluno) {
         Aluno alunoExistente = buscar(id);
         if (Objects.isNull(alunoExistente)) {
-            return alunoMapper.toResponse(new Aluno());
+            return null;
         }
         alunoExistente.setNome(aluno.getNome());
         alunoExistente.setSexo(aluno.getSexo());
@@ -64,5 +69,17 @@ public class AlunoService {
 
     private Aluno buscar(Integer id) {
         return repository.findById(id);
+    }
+
+    @Transactional
+    public AlunoDtoResponse alterarProfessor(Integer idAluno, Integer idProfessor) {
+        Aluno alunoExistente = buscar(idAluno);
+        Professor professorExistente = professorRepository.findById(idProfessor);
+        if (Objects.isNull(alunoExistente) || Objects.isNull(professorExistente)) {
+            return null;
+        }
+        alunoExistente.setProfessor(professorExistente);
+        repository.persistAndFlush(alunoExistente);
+        return alunoMapper.toResponse(alunoExistente);
     }
 }

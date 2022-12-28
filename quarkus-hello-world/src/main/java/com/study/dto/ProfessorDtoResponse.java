@@ -17,4 +17,5 @@ public class ProfessorDtoResponse {
     private String nome;
     private SEXO sexo;
     private TITULO titulo;
+    private CursoDtoResponse curso;
 }
