@@ -1,5 +1,6 @@
 package com.study.dto;
 
+import com.fasterxml.jackson.annotation.JsonInclude;
 import com.study.enums.SEXO;
 
 import lombok.AllArgsConstructor;
@@ -16,5 +17,7 @@ public class AlunoDtoResponse {
     private String nome;
     private SEXO sexo;
     private String matricula;
+    
+    @JsonInclude(JsonInclude.Include.NON_NULL)
     private ProfessorDtoResponse professor;
 }
