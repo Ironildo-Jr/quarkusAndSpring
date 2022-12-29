@@ -14,6 +14,8 @@ import javax.persistence.JoinColumn;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.NotNull;
 
 import com.study.enums.SEXO;
 import com.study.enums.TITULO;
@@ -32,9 +34,10 @@ import lombok.NoArgsConstructor;
 public class Professor {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
 
+    @NotBlank(message = "Nome nao pode ser vazio ou nulo")
     @Column(name = "Nome", nullable = false)
     private String nome;
 
@@ -42,6 +45,7 @@ public class Professor {
     @Column(name = "Sexo")
     private SEXO sexo;
 
+    @NotNull(message = "Titulo nao pode ser vazio ou nulo")
     @Enumerated(EnumType.STRING)
     @Column(name = "Titulo", nullable = false)
     private TITULO titulo;

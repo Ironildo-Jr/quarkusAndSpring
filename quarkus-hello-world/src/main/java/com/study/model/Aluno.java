@@ -11,6 +11,7 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+import javax.validation.constraints.NotBlank;
 
 import com.study.enums.SEXO;
 
@@ -28,9 +29,10 @@ import lombok.NoArgsConstructor;
 public class Aluno {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "Id", nullable = false)
+    @Column(name = "Id")
     private Integer id;
 
+    @NotBlank(message = "Nome nao pode ser vazio ou nulo")
     @Column(name = "Nome", nullable = false)
     private String nome;
 
@@ -38,6 +40,7 @@ public class Aluno {
     @Column(name = "Sexo")
     private SEXO sexo;
 
+    @NotBlank(message = "Matricula nao pode ser vazia ou nula")
     @Column(name = "Matricula", nullable = false)
     private String matricula;
 
