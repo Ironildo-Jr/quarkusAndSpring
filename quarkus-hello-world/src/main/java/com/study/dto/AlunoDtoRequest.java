@@ -18,11 +18,12 @@ import lombok.NoArgsConstructor;
 @JsonIgnoreProperties
 public class AlunoDtoRequest {
 
-    @NotBlank(message = "Matricula nao pode ser nula")
-    @Size(min = 8 , message = "Matricula deve ter pelo menos 5 digitos")
+    @NotBlank(message = "Matricula nao pode ser nula ou vazia")
+    @Size(min = 8 , message = "Matricula deve ter pelo menos 8 digitos")
+    @Size(max = 8 , message = "Matricula deve ter no maximo 8 digitos")
     private String matricula;
 
-    @NotBlank(message = "Nome nao pode ser nula")
+    @NotBlank(message = "Nome nao pode ser nulo ou vazio")
     @Size(min = 2 , message = "Nome deve ter pelo menos 2 digitos")
     private String nome;
 
