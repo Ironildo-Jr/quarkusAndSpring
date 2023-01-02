@@ -19,9 +19,11 @@ public class CursoMapper {
     }
 
     public List<CursoDtoResponse> toListResponse(List<Curso> cursos) {
-        List<CursoDtoResponse> CursosResponse = new ArrayList<CursoDtoResponse>();
-        cursos.stream().forEach(a -> CursosResponse.add(toResponse(a)));
-        return CursosResponse;
+        List<CursoDtoResponse> cursosResponse = new ArrayList<CursoDtoResponse>();
+        if (Objects.isNull(cursos) || cursos.isEmpty())
+            return cursosResponse;
+        cursos.stream().forEach(a -> cursosResponse.add(toResponse(a)));
+        return cursosResponse;
     }
 
     public Curso toEntity(CursoDtoRequest cursoRequest) {

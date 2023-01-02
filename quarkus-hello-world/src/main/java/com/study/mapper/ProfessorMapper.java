@@ -5,17 +5,18 @@ import java.util.List;
 import java.util.Objects;
 
 import javax.enterprise.context.RequestScoped;
-import javax.inject.Inject;
 
 import com.study.dto.ProfessorDtoRequest;
 import com.study.dto.ProfessorDtoResponse;
 import com.study.model.Professor;
 
+import lombok.RequiredArgsConstructor;
+
 @RequestScoped
+@RequiredArgsConstructor
 public class ProfessorMapper {
 
-    @Inject
-    private CursoMapper cursoMapper;
+    private final CursoMapper cursoMapper;
 
     public ProfessorDtoResponse toResponse(Professor professor) {
         if (Objects.isNull(professor))
@@ -26,6 +27,8 @@ public class ProfessorMapper {
 
     public List<ProfessorDtoResponse> toListResponse(List<Professor> professores) {
         List<ProfessorDtoResponse> professoresResponse = new ArrayList<ProfessorDtoResponse>();
+        if (Objects.isNull(professores) || professores.isEmpty())
+            return professoresResponse;
         professores.stream().forEach(a -> professoresResponse.add(toResponse(a)));
         return professoresResponse;
     }
